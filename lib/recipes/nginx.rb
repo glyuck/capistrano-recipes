@@ -31,6 +31,11 @@ Capistrano::Configuration.instance.load do
       sudo "service nginx restart"
     end
     
+    desc "|DarkRecipes| Reload nginx"
+    task :reload, :roles => :app , :except => { :no_release => true } do
+      sudo "service nginx reload"
+    end
+    
     desc "|DarkRecipes| Stop nginx"
     task :stop, :roles => :app , :except => { :no_release => true } do
       sudo "service nginx stop"
