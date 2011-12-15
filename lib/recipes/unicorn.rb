@@ -18,7 +18,7 @@ Capistrano::Configuration.instance.load do
   # The wrapped bin to start unicorn
   # This is necessary if you're using rvm
   set :unicorn_bin, 'bundle exec unicorn' unless exists?(:unicorn_bin)
-  set :unicorn_socket, File.join(sockets_path,'unicorn.sock') unless exists?(:unicorn_socket)
+  set(:unicorn_socket) { File.join(sockets_path,'unicorn.sock') } unless exists?(:unicorn_socket)
 
   # Defines where the unicorn pid will live.
   set(:unicorn_pid) { File.join(pids_path, "unicorn.pid") } unless exists?(:unicorn_pid)
@@ -26,10 +26,10 @@ Capistrano::Configuration.instance.load do
   # Our unicorn template to be parsed by erb
   # You may need to generate this file the first time with the generator
   # included in the gem
-  set(:unicorn_local_config) { File.join(templates_path, "unicorn.rb.erb") } 
+  set(:unicorn_local_config) { File.join(templates_path, "unicorn.rb.erb") } unless exists?(:unicorn_local_config)
 
   # The remote location of unicorn's config file. Used by god to fire it up
-  set(:unicorn_remote_config) { "#{shared_path}/config/unicorn.rb" }
+  set(:unicorn_remote_config) { "#{shared_path}/config/unicorn.rb" } unless exists?(:unicorn_remote_config)
 
   def unicorn_start_cmd
     "cd #{current_path} && #{unicorn_bin} -c #{unicorn_remote_config} -E #{rails_env} -D"
@@ -63,8 +63,8 @@ Capistrano::Configuration.instance.load do
     
     desc <<-EOF
     |DarkRecipes| Parses the configuration file through ERB to fetch our variables and \
-    uploads the result to #{unicorn_remote_config}, to be loaded by whoever is booting \
-    up the unicorn.
+    uploads the result to \#{shared_path}/config/unicorn.rb (can be configured via \
+    :unicorn_remote_config), to be loaded by whoever is booting up the unicorn.
     EOF
     task :setup, :roles => :app , :except => { :no_release => true } do
       # TODO: refactor this to a more generic setup task once we have more socket tasks.
