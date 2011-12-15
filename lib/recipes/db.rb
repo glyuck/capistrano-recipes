@@ -1,6 +1,13 @@
 require 'erb'
 
 Capistrano::Configuration.instance.load do
+
+  # Path to the database config erb template to be parsed before uploading to remote
+  set(:database_local_config) { File.join(templates_path, "database.yaml.erb") } unless exists?(:database_local_config)
+
+  # The remote location of database config file
+  set(:database_remote_config) { "#{shared_path}/config/database.yml" } unless exists?(:database_remote_config)
+
   namespace :db do
     namespace :mysql do
       desc <<-EOF
@@ -74,24 +81,8 @@ Capistrano::Configuration.instance.load do
     task :create_yaml do      
       set(:db_user) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
       set(:db_pass) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
-      
-      db_config = ERB.new <<-EOF
-      base: &base
-        adapter: mysql
-        encoding: utf8
-        username: #{db_user}
-        password: #{db_pass}
 
-      #{environment}:
-        database: #{application}_#{environment}
-        <<: *base
-
-      test:
-        database: #{application}_test
-        <<: *base
-      EOF
-
-      put db_config.result, "#{shared_path}/config/database.yml"
+      generate_config(database_local_config, database_remote_config)
     end
   end
     

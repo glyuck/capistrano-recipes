@@ -1,0 +1,14 @@
+base: &base
+  adapter: mysql
+  encoding: utf8
+  username: <%= db_user %>
+  password: <%= db_pass %>
+
+<%= environment %>:
+  database: <%= application %>_<%= environment %>
+  <<: *base
+
+test:
+  database: <%= application %>_test
+  <<: *base
+
