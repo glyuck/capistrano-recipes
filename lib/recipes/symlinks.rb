@@ -1,3 +1,5 @@
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
   # These are set to the same structure in shared <=> current
   set :normal_symlinks, %w(tmp log config/database.yml) unless exists?(:normal_symlinks)

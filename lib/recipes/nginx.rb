@@ -1,3 +1,5 @@
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
     
   # Where your nginx lives. Usually /opt/nginx or /usr/local/nginx for source compiled.

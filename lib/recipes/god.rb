@@ -2,6 +2,8 @@
 # God is a Process Monitoring Framework written in Ruby
 # More info at http://god.rubyforge.org/
 #------------------------------------------------------------------------------
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
   _cset(:god_local_config)  { "#{templates_path}/app.god.erb" }
   _cset(:god_remote_config) { "#{shared_path}/config/app.god" }

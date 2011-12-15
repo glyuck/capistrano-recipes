@@ -1,4 +1,6 @@
 # Common hooks for all scenarios.
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
   after 'deploy:setup' do
     app.setup

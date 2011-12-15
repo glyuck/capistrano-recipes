@@ -1,3 +1,5 @@
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
   namespace :bundler do
     desc "|DarkRecipes| Installs bundler gem to your server"

@@ -1,3 +1,5 @@
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
+
 Capistrano::Configuration.instance.load do
   namespace :passenger do
     desc "|DarkRecipes| Restart Rails app running under Phusion Passenger by touching restart.txt"

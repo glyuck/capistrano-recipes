@@ -1,3 +1,4 @@
+require File.expand_path(File.dirname(__FILE__) + '/../helpers')
 require 'erb'
 
 Capistrano::Configuration.instance.load do
