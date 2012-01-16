@@ -12,17 +12,17 @@ Capistrano::Configuration.instance.load do
     desc "|DarkRecipes| Make all the symlinks in a single run"
     task :make, :roles => :app, :except => { :no_release => true } do
       commands = normal_symlinks.map do |path|
-        "rm -rf #{current_release}/#{path} && \
-         ln -s #{shared_path}/#{path} #{current_release}/#{path}"
+        "rm -rf #{latest_release}/#{path} && \
+         ln -s #{shared_path}/#{path} #{latest_release}/#{path}"
       end
 
       commands += weird_symlinks.map do |from, to|
-        "rm -rf #{current_release}/#{to} && \
-         ln -s #{shared_path}/#{from} #{current_release}/#{to}"
+        "rm -rf #{latest_release}/#{to} && \
+         ln -s #{shared_path}/#{from} #{latest_release}/#{to}"
       end
 
       run <<-CMD
-        cd #{current_release} && #{commands.join(" && ")}
+        cd #{latest_release} && #{commands.join(" && ")}
       CMD
     end
   end
